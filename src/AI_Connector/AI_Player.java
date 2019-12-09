@@ -4,6 +4,7 @@ package AI_Connector;
 import java.io.*;
 import java.net.Socket;
 import java.net.URLEncoder;
+import java.sql.SQLOutput;
 
 public class AI_Player extends Thread{
 
@@ -20,7 +21,7 @@ public class AI_Player extends Thread{
     }
 
     public void run() {
-
+        String Connected_str = "Connected";
         //initialization
         try {
             ips = playerSocket.getInputStream();
@@ -29,7 +30,12 @@ public class AI_Player extends Thread{
             fromAiPlayer = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
 
             sendToClient("Go");
-            System.out.println(MessageFromClient());
+            String firstMessage = new String(MessageFromClient());
+            if(Connected_str == firstMessage.intern())
+                while (true) {
+                    sendToClient("W");
+                    System.out.println(MessageFromClient());
+                }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,8 +45,17 @@ public class AI_Player extends Thread{
 
     private String MessageFromClient(){
         try{
-            int size = fromAiPlayer.read();;
-            System.out.println(size);
+            int size;
+            while(true) {
+                try {
+                    size = fromAiPlayer.read();
+                    break;
+                }catch(Exception ex){
+
+                }
+            }
+            size = fromAiPlayer.read();
+            System.out.println("size of next message is: " + size);
             byte[] clientData = new byte[size];
             for(int i = 0; i< size; i++){
                 clientData[i] = (byte) fromAiPlayer.read();
