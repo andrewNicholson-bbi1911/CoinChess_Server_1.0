@@ -5,6 +5,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.URLEncoder;
 import java.sql.SQLOutput;
+import java.util.Scanner;
 
 public class AI_Player extends Thread{
 
@@ -13,6 +14,10 @@ public class AI_Player extends Thread{
 
     private BufferedReader fromAiPlayer;
     private PrintWriter toAiPlayer;
+
+
+    Scanner scan = new Scanner(System.in);
+
 
     AI_Player(Socket player) {
         System.out.println("some AI has connected");
@@ -33,8 +38,10 @@ public class AI_Player extends Thread{
             String firstMessage = new String(MessageFromClient());
             if(Connected_str == firstMessage.intern())
                 while (true) {
-                    sendToClient("W");
-                    System.out.println(MessageFromClient());
+                    System.out.print("Server(you)> ");
+                    String message = scan.nextLine();
+                    sendToClient(message);
+                    System.out.println("AI> " + MessageFromClient());
                 }
 
         } catch (IOException e) {
@@ -55,7 +62,7 @@ public class AI_Player extends Thread{
                 }
             }
             size = fromAiPlayer.read();
-            System.out.println("size of next message is: " + size);
+            //System.out.println("size of next message is: " + size);
             byte[] clientData = new byte[size];
             for(int i = 0; i< size; i++){
                 clientData[i] = (byte) fromAiPlayer.read();
@@ -72,14 +79,14 @@ public class AI_Player extends Thread{
 
     public void sendToClient( String message ){
         try {
-            message = URLEncoder.encode(message, "UTF-8");
+            //message = URLEncoder.encode(message, "UTF-8");
             toAiPlayer.print(message.getBytes().length);
             toAiPlayer.flush();
             toAiPlayer.println(message);
             toAiPlayer.flush();
-            System.out.println("sent to AI client: " + message + " | size = " + message.getBytes().length);
+            //System.out.println("sent to AI client: " + message + " | size = " + message.getBytes().length);
 
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
