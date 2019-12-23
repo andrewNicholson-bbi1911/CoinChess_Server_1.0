@@ -13,9 +13,9 @@ public class ServerCell{
 
     private GameBoardForServer gameBoardForServer;
 
-    public ServerCell ServerCell(byte circle, byte num, GameBoardForServer gameBoardForServer){
-        position [0] = circle;
-        position [1] = num;
+    public ServerCell ServerCell(byte raw, byte column, GameBoardForServer gameBoardForServer){
+        position [0] = raw;
+        position [1] = column;
         this.gameBoardForServer = gameBoardForServer;
         return this;
     }

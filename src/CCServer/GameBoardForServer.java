@@ -54,7 +54,7 @@ public class GameBoardForServer{
                         byte centerActiveDistance = (byte) ((byte)6 - activeCell.position[1]);
                         byte xDistance = (byte) (Math.abs(targetCell.position[0]-activeCell.position[0]));
                         if(centerActiveDistance*centerTargetDistance<0){
-                            xDistance+=(centerActiveDistance>=centerTargetDistance)?centerTargetDistance:centerTargetDistance;
+                            xDistance+=(centerActiveDistance>=centerTargetDistance)?centerActiveDistance:centerTargetDistance;
                         }
                         if(xDistance<=hero.attackRange){//if the cell is able for attack;
                             targetCell.setAbleToBeAttacked(hero.damage, hero.attackSplashRadius==1);
